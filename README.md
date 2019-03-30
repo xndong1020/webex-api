@@ -2,4 +2,4 @@
 
 ### Front-end using React
 
-### Back-end using Express.js, Mongodb
+### Back-end using Express.js, Mongodb, Mongoose
