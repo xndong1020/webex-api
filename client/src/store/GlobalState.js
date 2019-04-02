@@ -1,34 +1,28 @@
-import React, { Component } from "react";
+import React, { useReducer, useState } from "react";
 import TestContext from "./test-context";
-class GlobalState extends Component {
-  state = {
-    open: true
+import { testReducer, OPEN_BAR, CLOSE_BAR } from "./reducer";
+const GlobalState = props => {
+  const [state, dispatch] = useReducer(testReducer, { open: true });
+  //const [open, changeData] = useState(true);
+  const openShow = () => {
+    //console.log("open");
+    dispatch({ type: OPEN_BAR });
   };
-  openShow = () => {
-    console.log("open");
-    this.setState({
-      open: true
-    });
-  };
-  closeShow = () => {
-    this.setState({
-      open: false
-    });
-    console.log("store: " + this.state.open);
+  const closeShow = () => {
+    dispatch({ type: CLOSE_BAR });
+    //console.log("store: " + this.state.open);
   };
 
-  render() {
-    return (
-      <TestContext.Provider
-        value={{
-          open: this.state.open,
-          openShow: this.openShow,
-          closeShow: this.closeShow
-        }}
-      >
-        {this.props.children}
-      </TestContext.Provider>
-    );
-  }
-}
+  return (
+    <TestContext.Provider
+      value={{
+        open: state.open,
+        openShow: openShow,
+        closeShow: closeShow
+      }}
+    >
+      {props.children}
+    </TestContext.Provider>
+  );
+};
 export default GlobalState;

@@ -2,7 +2,8 @@
   "name": "webex-client",
   "description": "Client for Webex testing tool",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js --port 3000 --open"
+    "start": "webpack-dev-server --config webpack.config.dev.js --port 3000 --open",
+    "build": "webpack --config webpack.config.prod.js"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
