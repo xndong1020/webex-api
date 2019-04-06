@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -47,58 +47,52 @@ const styles = theme => ({
   }
 });
 
-class Header extends React.Component {
-  static contextType = TestContext;
-
-  handleDrawerOpen = () => {
-    this.context.openShow();
+const Header = props => {
+  const context = useContext(TestContext);
+  const handleDrawerOpen = () => {
+    context.openShow();
   };
 
-  render() {
-    const { classes } = this.props;
+  const { classes } = props;
 
-    return (
-      <AppBar
-        position="absolute"
-        className={classNames(
-          classes.appBar,
-          this.context.open && classes.appBarShift
-        )}
-      >
-        <Toolbar
-          disableGutters={!this.context.open}
-          className={classes.toolbar}
+  return (
+    <AppBar
+      position="absolute"
+      className={classNames(
+        classes.appBar,
+        context.open && classes.appBarShift
+      )}
+    >
+      <Toolbar disableGutters={!context.open} className={classes.toolbar}>
+        <IconButton
+          color="inherit"
+          aria-label="Open drawer"
+          onClick={handleDrawerOpen}
+          className={classNames(
+            classes.menuButton,
+            context.open && classes.menuButtonHidden
+          )}
         >
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={this.handleDrawerOpen}
-            className={classNames(
-              classes.menuButton,
-              this.context.open && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Dashboard
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    );
-  }
-}
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          className={classes.title}
+        >
+          Dashboard
+        </Typography>
+        <IconButton color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -68,43 +68,40 @@ const styles = theme => ({
   }
 });
 
-class Sidebar extends React.Component {
-  static contextType = TestContext;
-
-  handleDrawerClose = () => {
-    this.context.closeShow();
+const Sidebar = props => {
+  const context = useContext(TestContext);
+  const handleDrawerClose = () => {
+    context.closeShow();
   };
 
-  render() {
-    const { classes } = this.props;
+  const { classes } = props;
 
-    return (
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: classNames(
-            classes.drawerPaper,
-            !this.context.open && classes.drawerPaperClose
-          )
-        }}
-        open={this.context.open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={this.handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-      </Drawer>
+  return (
+    <Drawer
+      variant="permanent"
+      classes={{
+        paper: classNames(
+          classes.drawerPaper,
+          !context.open && classes.drawerPaperClose
+        )
+      }}
+      open={context.open}
+    >
+      <div className={classes.toolbarIcon}>
+        <IconButton onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      <List>{mainListItems}</List>
+      <Divider />
+    </Drawer>
 
-      // <main className={classes.content}>
-      //   <div className={classes.appBarSpacer} />
-      // </main>
-    );
-  }
-}
+    // <main className={classes.content}>
+    //   <div className={classes.appBarSpacer} />
+    // </main>
+  );
+};
 
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired
