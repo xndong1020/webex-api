@@ -9,7 +9,7 @@ const findById = async id => {
 }
 
 const create =  async device => {
-    return await Device.create(data)
+    return await Device.create(device)
 }
 
 const findAndRemove = async id => {
