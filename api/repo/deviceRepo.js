@@ -8,12 +8,12 @@ const findById = async id => {
     return await Device.findOne({_id : id})
 }
 
-const create =  async device => {
+const create =  async data => {
     return await Device.create(data)
 }
 
 const findAndRemove = async id => {
-    return await Device.findOneAndRemove(id)
+    return await Device.findOneAndRemove({_id : id})
 }
 
 module.exports = {

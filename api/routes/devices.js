@@ -16,7 +16,7 @@ const updateDeviceSchema = Joi.object().keys({
 
 router.get('/', async (req, res, next) => {
     try{
-        const result = await findAll
+        const result = await findAll()
         res.send(result)
     } catch (err) {
         res.status(400).send(err)
@@ -68,7 +68,7 @@ router.delete('/:id', async (req, res, next) => {
     const {id} = req.params
 
     try{
-        await Device.findAndRemove(id)
+        await findAndRemove(id)
         res.status(200).send()
     } catch (err) {
         res.status(400).send(err)

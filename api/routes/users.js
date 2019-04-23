@@ -1,22 +1,24 @@
 const express = require('express')
-const Device = require('../models/Devices')
+const Users = require('../models/Users.js')
 const { findAll,findById,create,findAndRemove } = require('../repo/UserRepo')
 const Joi = require('joi')
 const router = express.Router()
 
 const createUserSchema = Joi.object().keys({
     name : Joi.string().required(),
-    email : Joi.string().required()
+    email : Joi.string().required(),
+    password : Joi.string().required()
 })
 
 const updateUserSchema = Joi.object().keys({
     name : Joi.string(),
-    email : Joi.string()
+    email : Joi.string(),
+    password : Joi.string()
 })
 
 router.get('/', async (req, res, next) => {
     try{
-        const result = await findAll
+        const result = await findAll()
         res.send(result)
     } catch (err) {
         res.status(400).send(err)
@@ -39,7 +41,7 @@ router.post('/', async (req, res, next) => {
     try{
         await Joi.validate(data, createUserSchema)
         const result = await create(data)
-        res.send(result)
+        res.status(201).send(result)
     } catch (err) {
         res.status(400).send(err)
     }
@@ -55,7 +57,7 @@ router.put('/:id', async (req, res, next) => {
         for (const key in data) {
             deviceInDb[key] = data[key]
         }
-
+        
         await deviceInDb.save()
 
         res.status(200).send()
@@ -68,7 +70,7 @@ router.delete('/:id', async (req, res, next) => {
     const {id} = req.params
 
     try{
-        await Device.findAndRemove(id)
+        await findAndRemove(id)
         res.status(200).send()
     } catch (err) {
         res.status(400).send(err)
