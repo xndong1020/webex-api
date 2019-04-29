@@ -1,23 +1,27 @@
 const express = require('express')
 const Users = require('../models/Users.js')
+// const JWT = require('../middlewares/JWT')
 const { findAll,findById,create,findAndRemove } = require('../repo/UserRepo')
 const Joi = require('joi')
 const router = express.Router()
 
+// User schema
 const createUserSchema = Joi.object().keys({
     name : Joi.string().required(),
     email : Joi.string().required(),
     password : Joi.string().required()
 })
-
 const updateUserSchema = Joi.object().keys({
     name : Joi.string(),
     email : Joi.string(),
     password : Joi.string()
 })
 
-router.get('/', async (req, res, next) => {
+// get all the user information 
+router.get('/', async (req, res) => {
     try{
+        console.log(req.isAuthenticated, req.user)
+        console.log('why i can not see!!!')
         const result = await findAll()
         res.send(result)
     } catch (err) {
@@ -25,7 +29,8 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:id', async (req, res, next) => {
+// get specific user information 
+router.get('/:id', async (req, res) => {
     const { id } = req.params
     try{
         const result = await findById(id)
@@ -35,8 +40,8 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
-
-router.post('/', async (req, res, next) => {
+// create a new user information 
+router.post('/', async (req, res) => {
     const data = req.body
     try{
         await Joi.validate(data, createUserSchema)
@@ -47,17 +52,19 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-router.put('/:id', async (req, res, next) => {
+// change user information 
+router.put('/:id', async (req, res) => {
     const { id } = req.params
     const data = req.body
     try{
         await Joi.validate(data, updateUserSchema)
         const deviceInDb = await findById(id)
+        console.log(deviceInDb)
 
         for (const key in data) {
             deviceInDb[key] = data[key]
         }
-        
+
         await deviceInDb.save()
 
         res.status(200).send()
@@ -66,7 +73,8 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
-router.delete('/:id', async (req, res, next) => {
+// delete a user information 
+router.delete('/:id', async (req, res) => {
     const {id} = req.params
 
     try{
@@ -76,8 +84,6 @@ router.delete('/:id', async (req, res, next) => {
         res.status(400).send(err)
     }
 })
-
-
 
 module.exports = router
 

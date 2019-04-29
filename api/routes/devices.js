@@ -4,16 +4,17 @@ const { findAll,findById,create,findAndRemove } = require('../repo/deviceRepo')
 const Joi = require('joi')
 const router = express.Router()
 
+// Device schema information 
 const createDeviceSchema = Joi.object().keys({
     name : Joi.string().required(),
     url : Joi.string().required()
 })
-
 const updateDeviceSchema = Joi.object().keys({
     name : Joi.string(),
     url : Joi.string()
 })
 
+// Get all devices information 
 router.get('/', async (req, res, next) => {
     try{
         const result = await findAll()
@@ -23,6 +24,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
+// Get specfic device information 
 router.get('/:id', async (req, res, next) => {
     const { id } = req.params
     try{
@@ -33,7 +35,7 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
-
+// Create a new device
 router.post('/', async (req, res, next) => {
     const data = req.body
     try{
@@ -45,6 +47,7 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+//  Edit a device 
 router.put('/:id', async (req, res, next) => {
     const { id } = req.params
     const data = req.body
@@ -64,6 +67,7 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
+// Delete a device 
 router.delete('/:id', async (req, res, next) => {
     const {id} = req.params
 
@@ -74,10 +78,5 @@ router.delete('/:id', async (req, res, next) => {
         res.status(400).send(err)
     }
 })
-
-
-
-
-
 
 module.exports = router
