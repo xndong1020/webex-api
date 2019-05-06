@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// Device table 
 const DeviceSchema = mongoose.Schema({
     name : {
         type : String,
